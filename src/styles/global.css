@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@theme {
+    --font-miskan: 'Miskan', 'sans-serif';
+}
+
+@font-face {
+    font-family: Miskan;
+    font-style: normal;
+    font-weight: 200 700;
+    font-display: swap;
+    src: url("/fonts/MiSkan.ttf") format("woff2");
+}
