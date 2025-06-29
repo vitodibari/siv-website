@@ -1,6 +1,9 @@
 @import "tailwindcss";
 
 @theme {
+    --color-siv-yellow: #FFE13D;
+    --color-siv-blue: #71ACEC;
+
     --font-miskan: 'Miskan', 'sans-serif';
 }
 
