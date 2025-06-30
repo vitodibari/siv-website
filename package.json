@@ -1,11 +1,11 @@
 {
   "name": "siv-website",
   "type": "module",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "astro dev --host",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "astro preview --host",
     "astro": "astro"
   },
   "dependencies": {
