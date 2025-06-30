@@ -1,7 +1,7 @@
 {
   "name": "siv-website",
   "type": "module",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "scripts": {
     "dev": "astro dev --host",
     "build": "astro build",
@@ -11,6 +11,11 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.10",
     "astro": "^5.10.1",
+    "astro-compress": "^2.3.8",
+    "photoswipe": "^5.4.4",
     "tailwindcss": "^4.1.10"
+  },
+  "devDependencies": {
+    "@types/photoswipe": "^4.1.6"
   }
 }

@@ -17,7 +17,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 <link rel="preload" href="/fonts/Miskan.ttf" as="font" type="font/ttf" crossorigin/>
 
 <!-- Canonical URL -->
-<link rel="canonical" href={}/>
+<link rel="canonical" href={canonicalURL.toString()}/>
 
 <!-- Primary Meta Tags -->
 <title>{SITE_TITLE}</title>

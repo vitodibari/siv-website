@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # vscode settings folder
 .vscode/
+/src/assets/gallery/
