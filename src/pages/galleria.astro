@@ -6,8 +6,11 @@ import type {ImageMetadata} from "astro";
 const matches = import.meta.glob("/src/assets/gallery/**/*.{jpeg,jpg,png,JPG}", {eager: true}) as
     Record<string, { default: ImageMetadata; }>;
 
-const matchesGroupedByDay = Object.groupBy(Object.entries(matches), ([path, _mod]) => path.split("/")[4]);
+// Group images by the day they were taken, assuming the folder structure is like:
+// /src/assets/gallery/YYYY/MM/DD/image.jpg
+const matchesGroupedByDay = Object.groupBy(Object.entries(matches), ([path, _mod]) => path.split("/")[4])
 
+// Convert grouped entries to a more usable format
 const imagesGroupedByDay = Object.entries(matchesGroupedByDay).map(([date, entries]) => [
     new Date(date).toLocaleDateString("it-IT", {
         year: "numeric",
@@ -16,9 +19,58 @@ const imagesGroupedByDay = Object.entries(matchesGroupedByDay).map(([date, entri
     }),
     entries!.map(([_, mod]) => mod.default as ImageMetadata),
 ]) as [string, ImageMetadata[]][];
+
+// Filter by date if provided
+const dateFilter = Astro.url.searchParams.get("date");
+const isValidDate = dateFilter && !isNaN(new Date(dateFilter).getTime());
+const imagesGroupedByDayFiltered = isValidDate ? imagesGroupedByDay.filter(([day, _]) => {
+    return day === new Date(dateFilter!).toLocaleDateString("it-IT", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+    });
+}) : imagesGroupedByDay;
+
+// Sort images by date
+imagesGroupedByDay.sort((a, b) => {
+    return new Date(b[0]).getTime() - new Date(a[0]).getTime();
+});
+
+export async function getStaticPaths() {
+    return Object.keys(matchesGroupedByDay).map((date) => ({
+        params: {date},
+    }));
+}
 ---
 
 <BaseLayout>
+    <!--Date filter-->
+    <form class="flex flex-col items-center justify-center pb-4" method="GET">
+        <label for="date" class="text-lg">Filtra per data:</label>
+        <div class="flex items-center rounded-md bg-white px-3 outline-1 -outline-offset-1 outline-gray-300">
+            <select name="date" id="date" onchange="this.form.submit()">
+                <option value="">Tutte le date</option>
+                {
+                    Object.keys(matchesGroupedByDay).map((date) => (
+                            <option value={date} selected={date === dateFilter}>
+                                {new Date(date).toLocaleDateString("it-IT", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                })}
+                            </option>
+                    ))
+                }
+            </select>
+            <!--<svg class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"-->
+            <!--     viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" data-slot="icon">-->
+            <!--    <path fill-rule="evenodd"-->
+            <!--          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"-->
+            <!--          clip-rule="evenodd"/>-->
+            <!--</svg>-->
+        </div>
+    </form>
+
     <!--Display a message if no images are found-->
     {
         Object.entries(matches).length === 0 && (
@@ -36,9 +88,9 @@ const imagesGroupedByDay = Object.entries(matchesGroupedByDay).map(([date, entri
     <!--Display the images in a grid with PhotoSwipe-->
     <div id="gallery" class="container mx-auto px-2 pb-2">
 
-        <!--Group images w.r.t. their folder-->
+        <!--Group images w.r.t. their folder (day of creation)-->
         {
-            imagesGroupedByDay.map(
+            imagesGroupedByDayFiltered.map(
                 ([day, images]) => (
                         <div class="mb-8">
                             <h2 class="text-2xl font-bold mb-4">{day}</h2>
