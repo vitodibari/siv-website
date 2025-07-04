@@ -97,16 +97,11 @@ export async function getStaticPaths() {
                             <div class="grid grid-cols-3 md:grid-cols-4 gap-1">
                                 {
                                     images.map(async (image) => {
-                                        const optimizedImage = await getImage({
-                                            src: image,
-                                            width: 2000,
-                                        });
-
                                         return (
                                                 <a
-                                                        href={optimizedImage.src}
-                                                        data-pswp-width={optimizedImage.attributes.width}
-                                                        data-pswp-height={optimizedImage.attributes.height}
+                                                        href={image.src}
+                                                        data-pswp-width={image.width}
+                                                        data-pswp-height={image.height}
                                                         target="_blank"
                                                 >
                                                     <Picture
