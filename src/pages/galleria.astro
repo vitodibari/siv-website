@@ -1,5 +1,7 @@
 ---
-import {Picture} from "astro:assets";
+export const prerender = false;
+
+import {Image, getImage, Picture} from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import type {ImageMetadata} from "astro";
 import EmptyGallery from "../components/EmptyGallery.astro";
@@ -13,11 +15,7 @@ const matchesGroupedByDay = Object.groupBy(Object.entries(matches), ([path, _mod
 
 // Convert grouped entries to a more usable format
 const imagesGroupedByDay = Object.entries(matchesGroupedByDay).map(([date, entries]) => [
-    new Date(date).toLocaleDateString("it-IT", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    }),
+    date,
     entries!.map(([_, mod]) => mod.default as ImageMetadata),
 ]) as [string, ImageMetadata[]][];
 
@@ -25,11 +23,7 @@ const imagesGroupedByDay = Object.entries(matchesGroupedByDay).map(([date, entri
 const dateFilter = Astro.url.searchParams.get("date");
 const isValidDate = dateFilter && !isNaN(new Date(dateFilter).getTime());
 const imagesGroupedByDayFiltered = isValidDate ? imagesGroupedByDay.filter(([day, _]) => {
-    return day === new Date(dateFilter!).toLocaleDateString("it-IT", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-    });
+    return day === dateFilter;
 }) : imagesGroupedByDay;
 
 // Sort images by date
@@ -79,8 +73,15 @@ export async function getStaticPaths() {
         <!--Group images w.r.t. their folder (day of creation)-->
         {
             imagesGroupedByDayFiltered.map(
-                ([day, images]) => (
+                ([date, images]) => (
                         <div class="mb-8">
+                            <h2 class="text-2xl font-bold mb-4">{
+                                new Date(date).toLocaleDateString("it-IT", {
+                                    year: "numeric",
+                                    month: "long",
+                                    day: "numeric",
+                                })
+                            }</h2>
                             <div class="sticky top-0 py-2 bg-white">
                                 <h2 class="text-2xl font-bold">{day}</h2>
                             </div>
