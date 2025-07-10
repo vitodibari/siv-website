@@ -45,26 +45,26 @@ export async function getStaticPaths() {
 ---
 
 <BaseLayout>
-    <!--Date filter-->
-    <form class="flex flex-col items-center justify-center pb-4" method="GET">
-        <label for="date" class="text-lg">Filtra per data:</label>
-        <div class="flex items-center rounded-md bg-white px-3 outline-1 -outline-offset-1 outline-gray-300">
-            <select name="date" id="date" onchange="this.form.submit()">
-                <option value="">Tutte le date</option>
-                {
-                    Object.keys(matchesGroupedByDay).map((date) => (
-                            <option value={date} selected={date === dateFilter}>
-                                {new Date(date).toLocaleDateString("it-IT", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                })}
-                            </option>
-                    ))
-                }
-            </select>
-        </div>
-    </form>
+    <!--&lt;!&ndash;Date filter&ndash;&gt;-->
+    <!--<form class="flex flex-col items-center justify-center pb-4" method="GET">-->
+    <!--    <label for="date" class="text-lg">Filtra per data:</label>-->
+    <!--    <div class="flex items-center rounded-md bg-white px-3 outline-1 -outline-offset-1 outline-gray-300">-->
+    <!--        <select name="date" id="date" onchange="this.form.submit()">-->
+    <!--            <option value="">Tutte le date</option>-->
+    <!--            {-->
+    <!--                Object.keys(matchesGroupedByDay).map((date) => (-->
+    <!--                        <option value={date} selected={date === dateFilter}>-->
+    <!--                            {new Date(date).toLocaleDateString("it-IT", {-->
+    <!--                                year: "numeric",-->
+    <!--                                month: "long",-->
+    <!--                                day: "numeric",-->
+    <!--                            })}-->
+    <!--                        </option>-->
+    <!--                ))-->
+    <!--            }-->
+    <!--        </select>-->
+    <!--    </div>-->
+    <!--</form>-->
 
     <!--Display a message if no images are found-->
     {
