@@ -1,117 +1,98 @@
 ---
-export const prerender = false;
-
-import {Image, getImage, Picture} from "astro:assets";
+import {Picture} from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import type {ImageMetadata} from "astro";
 import EmptyGallery from "../components/EmptyGallery.astro";
 
-const matches = import.meta.glob("/src/assets/gallery/**/*.{jpeg,jpg,png,JPG}", {eager: true}) as
-    Record<string, { default: ImageMetadata; }>;
+const matches = import.meta.glob(
+    "/src/assets/gallery/**/*.{jpeg,jpg,png,JPG}",
+    {eager: true},
+) as Record<string, { default: ImageMetadata }>;
 
 // Group images by the day they were taken, assuming the folder structure is like:
-// /src/assets/gallery/YYYY/MM/DD/image.jpg
-const matchesGroupedByDay = Object.groupBy(Object.entries(matches), ([path, _mod]) => path.split("/")[4])
+// /src/assets/gallery/YYYY-MM-DD/image.jpg
+const matchesGroupedByDay = Object.groupBy(
+    Object.entries(matches),
+    ([path, _mod]) => path.split("/")[4],
+);
 
-// Convert grouped entries to a more usable format
-const imagesGroupedByDay = Object.entries(matchesGroupedByDay).map(([date, entries]) => [
-    date,
-    entries!.map(([_, mod]) => mod.default as ImageMetadata),
-]) as [string, ImageMetadata[]][];
-
-// Filter by date if provided
-const dateFilter = Astro.url.searchParams.get("date");
-const isValidDate = dateFilter && !isNaN(new Date(dateFilter).getTime());
-const imagesGroupedByDayFiltered = isValidDate ? imagesGroupedByDay.filter(([day, _]) => {
-    return day === dateFilter;
-}) : imagesGroupedByDay;
-
-// Sort images by date
-imagesGroupedByDay.sort((a, b) => {
-    return new Date(b[0]).getTime() - new Date(a[0]).getTime();
-}).reverse();
-
-export async function getStaticPaths() {
-    return Object.keys(matchesGroupedByDay).map((date) => ({
-        params: {date},
-    }));
-}
+// Convert grouped entries to a more usable format and sort by date (newest first)
+const imagesGroupedByDay = Object.entries(matchesGroupedByDay)
+    .map(
+        ([date, entries]) =>
+            [
+                date as string,
+                entries!.map(([_, mod]) => mod.default as ImageMetadata),
+            ] as [string, ImageMetadata[]],
+    )
+    .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime());
 ---
 
 <BaseLayout>
-    <!--&lt;!&ndash;Date filter&ndash;&gt;-->
-    <!--<form class="flex flex-col items-center justify-center pb-4" method="GET">-->
-    <!--    <label for="date" class="text-lg">Filtra per data:</label>-->
-    <!--    <div class="flex items-center rounded-md bg-white px-3 outline-1 -outline-offset-1 outline-gray-300">-->
-    <!--        <select name="date" id="date" onchange="this.form.submit()">-->
-    <!--            <option value="">Tutte le date</option>-->
-    <!--            {-->
-    <!--                Object.keys(matchesGroupedByDay).map((date) => (-->
-    <!--                        <option value={date} selected={date === dateFilter}>-->
-    <!--                            {new Date(date).toLocaleDateString("it-IT", {-->
-    <!--                                year: "numeric",-->
-    <!--                                month: "long",-->
-    <!--                                day: "numeric",-->
-    <!--                            })}-->
-    <!--                        </option>-->
-    <!--                ))-->
-    <!--            }-->
-    <!--        </select>-->
-    <!--    </div>-->
-    <!--</form>-->
+    <div class="sticky top-0 bg-white backdrop-blur-sm z-10">
+        <div class="flex flex-col items-center justify-center pb-4">
+            <label for="date-filter" class="text-lg">Filtra per data:</label>
+            <div class="flex items-center rounded-md bg-white px-3 outline-1 -outline-offset-1 outline-gray-300">
+                <select id="date-filter">
+                    <option value="all">Tutte le date</option>
+                    {
+                        imagesGroupedByDay.map(([date]) => (
+                                <option value={date}>
+                                    {new Date(date).toLocaleDateString("it-IT", {
+                                        year: "numeric",
+                                        month: "long",
+                                        day: "numeric",
+                                    })}
+                                </option>
+                        ))
+                    }
+                </select>
+            </div>
+        </div>
+    </div>
 
     <!--Display a message if no images are found-->
-    {
-        Object.entries(matches).length === 0 && (
-                    <EmptyGallery/>
-        )
-    }
+    {Object.entries(matches).length === 0 &&
+            <EmptyGallery/>}
 
     <!--Display the images in a grid with PhotoSwipe-->
     <div id="gallery" class="container mx-auto px-2 pb-2">
-
-        <!--Group images w.r.t. their folder (day of creation)-->
         {
-            imagesGroupedByDayFiltered.map(
-                ([date, images]) => (
-                        <div class="mb-8">
-                            <h2 class="text-2xl font-bold mb-4">{
-                                new Date(date).toLocaleDateString("it-IT", {
-                                    year: "numeric",
-                                    month: "long",
-                                    day: "numeric",
-                                })
-                            }</h2>
-                            <div class="sticky top-0 py-2 bg-white">
-                                <h2 class="text-2xl font-bold">{day}</h2>
-                            </div>
-                            <div class="grid grid-cols-3 md:grid-cols-4 gap-1">
-                                {
-                                    images.map(async (image) => {
-                                        return (
-                                                <a
-                                                        href={image.src}
-                                                        data-pswp-width={image.width}
-                                                        data-pswp-height={image.height}
-                                                        target="_blank"
-                                                >
-                                                    <Picture
-                                                            src={image}
-                                                            alt={image.src}
-                                                            width={1000}
-                                                            quality={50}
-                                                            formats={['jpeg', 'jpg', 'JPEG', 'JPG']}
-                                                            class="object-cover w-full object-top aspect-square"
-                                                            loading="lazy"
-                                                    />
-                                                </a>
-                                        );
-                                    })
-
-                                }
-                            </div>
+            imagesGroupedByDay.map(([date, images]) => (
+                    <div class="day-section mb-8" data-date={date}>
+                        <!--<div class="sticky top-0 p-4 bg-white">-->
+                        <!--    <h2 class="text-2xl font-bold">-->
+                        <!--        {new Date(date).toLocaleDateString("it-IT", {-->
+                        <!--            year: "numeric",-->
+                        <!--            month: "long",-->
+                        <!--            day: "numeric",-->
+                        <!--        })}-->
+                        <!--    </h2>-->
+                        <!--</div>-->
+                        <div class="grid grid-cols-3 md:grid-cols-4 gap-1">
+                            {images.map(async (image) => {
+                                return (
+                                        <a
+                                                href={image.src}
+                                                data-pswp-width={image.width}
+                                                data-pswp-height={image.height}
+                                                target="_blank"
+                                        >
+                                            <Picture
+                                                    src={image}
+                                                    alt={image.src}
+                                                    width={1000}
+                                                    quality={50}
+                                                    formats={["avif", "webp"]}
+                                                    class="object-cover w-full object-top aspect-square"
+                                                    loading="lazy"
+                                            />
+                                        </a>
+                                );
+                            })}
                         </div>
-                ))
+                    </div>
+            ))
         }
     </div>
 </BaseLayout>
@@ -120,35 +101,82 @@ export async function getStaticPaths() {
     import PhotoSwipeLightbox from "photoswipe/lightbox";
     import "photoswipe/style.css";
 
+    // Client-side filtering logic with URL synchronization
+    const select = document.getElementById("date-filter") as HTMLSelectElement;
+    const sections = document.querySelectorAll(".day-section",) as NodeListOf<HTMLElement>;
+
+    const applyFilter = (selectedDate: string, updateUrl = true) => {
+        sections.forEach((section) => {
+            if (
+                selectedDate === "all" ||
+                section.dataset.date === selectedDate
+            ) {
+                section.style.display = "block";
+            } else {
+                section.style.display = "none";
+            }
+        });
+
+        if (updateUrl) {
+            const url = new URL(window.location.href);
+            if (selectedDate === "all") {
+                url.searchParams.delete("data");
+            } else {
+                url.searchParams.set("data", selectedDate);
+            }
+            window.history.replaceState({}, "", url);
+        }
+    };
+
+    // Initial load: check for ?data= in URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialDate = urlParams.get("data");
+    if (
+        initialDate &&
+        Array.from(select.options).some((opt) => opt.value === initialDate)
+    ) {
+        select.value = initialDate;
+        applyFilter(initialDate, false);
+    }
+
+    select?.addEventListener("change", (e) => {
+        const selectedDate = (e.target as HTMLSelectElement).value;
+        applyFilter(selectedDate);
+    });
+
+    // PhotoSwipe initialization
     const lightbox = new PhotoSwipeLightbox({
         gallery: "#gallery",
         children: "a",
         pswpModule: () => import("photoswipe"),
     });
 
-    lightbox.on('uiRegister', function () {
+    lightbox.on("uiRegister", function () {
         lightbox!.pswp!.ui!.registerElement({
-            name: 'download-button',
+            name: "download-button",
             order: 8,
             isButton: true,
-            tagName: 'a',
+            tagName: "a",
 
             // SVG with outline
             html: {
                 isCustomSVG: true,
                 inner: '<path d="M20.5 14.3 17.1 18V10h-2.2v7.9l-3.4-3.6L10 16l6 6.1 6-6.1ZM23 23H9v2h14Z" id="pswp__icn-download"/>',
-                outlineID: 'pswp__icn-download'
+                outlineID: "pswp__icn-download",
             },
 
             onInit: (el, pswp) => {
-                el.setAttribute('download', '');
-                el.setAttribute('target', '_blank');
-                el.setAttribute('rel', 'noopener');
+                const a = el as HTMLAnchorElement;
+                a.setAttribute("download", "");
+                a.setAttribute("target", "_blank");
+                a.setAttribute("rel", "noopener");
 
-                pswp.on('change', () => {
-                    el.href = pswp!.currSlide!.data.src;
+                pswp.on("change", () => {
+                    if (pswp.currSlide?.data.src) {
+                        a.href = pswp.currSlide.data.src;
+                    }
                 });
-            }
+            },
         });
     });
 
