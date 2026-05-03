@@ -1,47 +1,86 @@
-# Astro Starter Kit: Minimal
+<div align="center">
+  <img src="public/logo.png" alt="Summer Is Volley Logo" width="200" />
+</div>
 
-```sh
-npm create astro@latest -- --template minimal
-```
+# Summer Is Volley
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+Sito ufficiale del torneo **Summer Is Volley**, organizzato da **A.S.D. Iuno**.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Il progetto è una web application costruita con **Astro**, progettata per fornire ai partecipanti e agli spettatori un accesso rapido ai risultati, ai calendari e a una galleria fotografica dinamica dell'evento.
 
-## 🚀 Project Structure
+## 🚀 Caratteristiche Principali
 
-Inside of your Astro project, you'll see the following folders and files:
+- **Landing Page Intuitiva**: Accesso immediato alle sezioni chiave del torneo.
+- **Galleria Fotografica Dinamica**: Immagini raggruppate automaticamente per data di creazione, con integrazione **PhotoSwipe** per una visualizzazione premium e supporto al download.
+- **Integrazione Hub Esterno**: Collegamenti diretti a calendari, gironi, gare e classifiche aggiornati in tempo reale.
+- **Design Responsive**: Ottimizzato per dispositivi mobile grazie a **Tailwind CSS**.
+- **Performance Elevate**: Ottimizzazione automatica delle immagini e compressione degli asset.
+- **Sponsor Showcase**: Carosello animato per la visualizzazione dei partner dell'evento.
+
+## 🛠️ Tech Stack
+
+- **Framework**: [Astro v5+](https://astro.build/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
+- **Librerie UI**: [PhotoSwipe](https://photoswipe.com/) per la gestione della galleria.
+- **Deployment**: Docker + Nginx.
+
+## 📂 Struttura del Progetto
 
 ```text
 /
-├── public/
+├── public/             # Asset statici pubblici
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── assets/         # Immagini, icone e gallery
+│   ├── components/     # Componenti Astro riutilizzabili
+│   ├── layouts/        # Layout di base della pagina
+│   ├── pages/          # Rotte dell'applicazione (index, galleria, 404, 500)
+│   ├── styles/         # Stili globali CSS
+│   └── consts.ts       # Costanti globali (Titolo, Descrizione)
+├── Dockerfile          # Configurazione per la containerizzazione
+├── nginx.conf          # Configurazione Nginx per la produzione
+└── astro.config.mjs    # Configurazione di Astro
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## ⌨️ Sviluppo Locale
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+### Prerequisiti
 
-Any static assets, like images, can be placed in the `public/` directory.
+- [Node.js](https://nodejs.org/) (versione LTS consigliata)
+- npm o yarn
 
-## 🧞 Commands
+### Installazione
 
-All commands are run from the root of the project, from a terminal:
+```sh
+# Installa le dipendenze
+npm install
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+### Avvio in Sviluppo
 
-## 👀 Want to learn more?
+```sh
+# Avvia il server di sviluppo con hot-reload
+npm run dev
+```
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Il sito sarà accessibile all'indirizzo `http://localhost:4321`.
+
+### Build per la Produzione
+
+```sh
+# Genera la build statica nella cartella ./dist
+npm run build
+```
+
+## 🐳 Deployment con Docker
+
+Il progetto è pronto per essere distribuito tramite Docker:
+
+```sh
+# Build dell'immagine
+docker build -t siv-website .
+
+# Esecuzione del container
+docker run -p 3000:3000 siv-website
+```
+
+L'applicazione sarà servita da Nginx sulla porta `3000`.
