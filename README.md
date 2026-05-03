@@ -11,9 +11,9 @@ Il progetto è una web application costruita con **Astro**, progettata per forni
 ## 🚀 Caratteristiche Principali
 
 - **Landing Page Intuitiva**: Accesso immediato alle sezioni chiave del torneo.
-- **Galleria Fotografica Dinamica**: Immagini raggruppate automaticamente per data di creazione, con integrazione **PhotoSwipe** per una visualizzazione premium e supporto al download.
-- **Integrazione Hub Esterno**: Collegamenti diretti a calendari, gironi, gare e classifiche aggiornati in tempo reale.
-- **Design Responsive**: Ottimizzato per dispositivi mobile grazie a **Tailwind CSS**.
+- **Galleria Fotografica Dinamica**: Immagini raggruppate automaticamente per data di creazione, con integrazione **PhotoSwipe** per una visualizzazione e supporto al download.
+- **Integrazione Hub Esterno**: Collegamenti diretti a calendari, gironi, gare e classifiche, aggiornati in tempo reale.
+- **Design Responsive**: Ottimizzato per dispositivi mobile.
 - **Performance Elevate**: Ottimizzazione automatica delle immagini e compressione degli asset.
 - **Sponsor Showcase**: Carosello animato per la visualizzazione dei partner dell'evento.
 
@@ -34,6 +34,7 @@ Il progetto è una web application costruita con **Astro**, progettata per forni
 │   ├── components/     # Componenti Astro riutilizzabili
 │   ├── layouts/        # Layout di base della pagina
 │   ├── pages/          # Rotte dell'applicazione (index, galleria, 404, 500)
+│   ├── scripts/        # Script client-side (PhotoSwipe, Navigazione)
 │   ├── styles/         # Stili globali CSS
 │   └── consts.ts       # Costanti globali (Titolo, Descrizione)
 ├── Dockerfile          # Configurazione per la containerizzazione
