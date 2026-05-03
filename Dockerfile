@@ -1,11 +1,9 @@
-FROM node:lts AS build
+FROM node:lts
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
+RUN npm i -g serve
 COPY . .
 RUN npm run build
-
-FROM nginx:alpine AS runtime
-COPY ./nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist /usr/share/nginx/html
-EXPOSE 3000
+CMD [ "node", "./dist/server/entry.mjs" ]
+EXPOSE 4321
