@@ -1,19 +1,20 @@
 ---
 import "../styles/global.css";
 import BaseHead from "../components/BaseHead.astro";
-import {SITE_DESCRIPTION, SITE_TITLE} from "../consts.ts";
+import {SITE_DESCRIPTION, SITE_KEYWORDS, SITE_TITLE} from "../consts.ts";
 
 interface Props {
     title?: string;
     description?: string;
+    keywords?: string;
 }
 
-const { title = SITE_TITLE, description = SITE_DESCRIPTION } = Astro.props;
+const { title = SITE_TITLE, description = SITE_DESCRIPTION, keywords = SITE_KEYWORDS } = Astro.props;
 ---
 
 <html lang="en">
 <head>
-    <BaseHead title={title} description={description}/>
+    <BaseHead title={title} description={description} keywords={keywords}/>
 </head>
 <body class="flex flex-col min-h-dvh">
 <main class='flex-1'>
