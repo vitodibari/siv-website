@@ -1,18 +1,19 @@
 ---
 // Import the global.css file here so that it is included on
 // all pages through the use of the <BaseHead /> component.
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_DESCRIPTION, SITE_KEYWORDS, SITE_TITLE } from '../consts';
 import '../styles/global.css';
 
 interface Props {
 	title?: string;
 	description?: string;
 	image?: string;
+	keywords?: string;
 }
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title = SITE_TITLE, description = SITE_DESCRIPTION, image = '/logo.png' } = Astro.props;
+const { title = SITE_TITLE, description = SITE_DESCRIPTION, image = '/logo.png', keywords = SITE_KEYWORDS } = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -32,7 +33,7 @@ const { title = SITE_TITLE, description = SITE_DESCRIPTION, image = '/logo.png' 
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <meta name="author" content="Summer Is Volley" />
-<meta name="keywords" content="Summer Is Volley, SummerIsVolley, Beach Volley, Torneo, 2025, Sport, A.S.D. Iuno" />
+<meta name="keywords" content={keywords} />
 <meta name="robots" content="index, follow" />
 <meta name="theme-color" content="#ffffff" />
 
