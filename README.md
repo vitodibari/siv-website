@@ -50,10 +50,10 @@ The project uses environment variables for configuration. Copy `.env.example` to
 cp .env.example .env
 ```
 
-| Variable | Description | Default                         |
-|----------|-------------|---------------------------------|
-| `PUBLIC_PHP_SERVER_HOST` | Hostname of the PHP server hosting the tournament hub pages (schedules, rankings, etc.). | `https://summerisvolley.it/hub` |
-| `BASE_URL` | Base URL path where the Astro website is served (useful for subpath hosting). | `/`                             |
+| Variable | Description | Default                             |
+|----------|-------------|-------------------------------------|
+| `PUBLIC_PHP_SERVER_HOST` | Hostname of the PHP server hosting the tournament hub pages (schedules, rankings, etc.). | `https://hub.summerisvolley.it/`    |
+| `BASE_URL` | Base URL path where the Astro website is served (useful for subpath hosting). | `/`                                 |
 
 ## ⌨️ Local Development
 
