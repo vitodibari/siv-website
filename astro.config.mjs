@@ -7,7 +7,8 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://summerisvolley.it',
+  site: process.env.BASE_URL || '/',
+  base: process.env.BASE_URL || '/',
 
   vite: {
       plugins: [tailwindcss()]
