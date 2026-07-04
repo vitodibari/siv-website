@@ -4,84 +4,101 @@
 
 # Summer Is Volley
 
-Sito ufficiale del torneo **Summer Is Volley**, organizzato da **A.S.D. Iuno**.
+Official website of the **Summer Is Volley** tournament, organized by **A.S.D. Iuno**.
 
-Il progetto è una web application costruita con **Astro**, progettata per fornire ai partecipanti e agli spettatori un accesso rapido ai risultati, ai calendari e a una galleria fotografica dinamica dell'evento.
+This project is a web application built with **Astro**, designed to provide participants and spectators with quick access to results, schedules, rankings, and a dynamic photo gallery of the event.
 
-## 🚀 Caratteristiche Principali
+## 🚀 Key Features
 
-- **Landing Page Intuitiva**: Accesso immediato alle sezioni chiave del torneo.
-- **Galleria Fotografica Dinamica**: Immagini raggruppate automaticamente per data di creazione, con integrazione **PhotoSwipe** per una visualizzazione e supporto al download.
-- **Integrazione Hub Esterno**: Collegamenti diretti a calendari, gironi, gare e classifiche, aggiornati in tempo reale.
-- **Design Responsive**: Ottimizzato per dispositivi mobile.
-- **Performance Elevate**: Ottimizzazione automatica delle immagini e compressione degli asset.
-- **Sponsor Showcase**: Carosello animato per la visualizzazione dei partner dell'evento.
+- **Intuitive Landing Page**: Immediate access to the key sections of the tournament.
+- **Dynamic Photo Gallery**: Images grouped automatically by creation date, with **PhotoSwipe** integration for full-screen view and download support.
+- **External Hub Integration**: Direct links to schedules, groups, matches, and rankings, updated in real time.
+- **Responsive Design**: Fully optimized for mobile devices.
+- **High Performance**: Automatic image optimization and asset compression.
+- **Sponsor Showcase**: Animated carousel for displaying event partners.
 
 ## 🛠️ Tech Stack
 
-- **Framework**: [Astro v5+](https://astro.build/)
+- **Framework**: [Astro v6+](https://astro.build/)
 - **Styling**: [Tailwind CSS v4](https://tailwindcss.com/)
-- **Librerie UI**: [PhotoSwipe](https://photoswipe.com/) per la gestione della galleria.
+- **UI Libraries**: [PhotoSwipe](https://photoswipe.com/) for gallery viewing.
 - **Deployment**: Docker + Nginx.
 
-## 📂 Struttura del Progetto
+## 📂 Project Structure
 
 ```text
 /
-├── public/             # Asset statici pubblici
+├── public/             # Public static assets
 ├── src/
-│   ├── assets/         # Immagini, icone e gallery
-│   ├── components/     # Componenti Astro riutilizzabili
-│   ├── layouts/        # Layout di base della pagina
-│   ├── pages/          # Rotte dell'applicazione (index, galleria, 404, 500)
-│   ├── scripts/        # Script client-side (PhotoSwipe, Navigazione)
-│   ├── styles/         # Stili globali CSS
-│   └── consts.ts       # Costanti globali (Titolo, Descrizione)
-├── Dockerfile          # Configurazione per la containerizzazione
-├── nginx.conf          # Configurazione Nginx per la produzione
-└── astro.config.mjs    # Configurazione di Astro
+│   ├── assets/         # Images, icons, and gallery folders
+│   ├── components/     # Reusable Astro components
+│   ├── layouts/        # Base layout templates
+│   ├── pages/          # Application routes (index, galleria, 404, 500)
+│   ├── scripts/        # Client-side scripts (PhotoSwipe, Navigation)
+│   ├── styles/         # Global CSS stylesheets
+│   └── consts.ts       # Global constants (Title, Description, Paths)
+├── Dockerfile          # Configuration for containerization
+├── nginx.conf          # Nginx production routing configuration
+└── astro.config.mjs    # Astro configuration
 ```
 
-## ⌨️ Sviluppo Locale
+## ⚙️ Environment Variables
 
-### Prerequisiti
-
-- [Node.js](https://nodejs.org/) (versione LTS consigliata)
-- npm o yarn
-
-### Installazione
+The project uses environment variables for configuration. Copy `.env.example` to `.env` to configure your local setup:
 
 ```sh
-# Installa le dipendenze
+cp .env.example .env
+```
+
+| Variable | Description | Default                             |
+|----------|-------------|-------------------------------------|
+| `PUBLIC_PHP_SERVER_HOST` | Hostname of the PHP server hosting the tournament hub pages (schedules, rankings, etc.). | `https://hub.summerisvolley.it/`    |
+| `BASE_URL` | Base URL path where the Astro website is served (useful for subpath hosting). | `/`                                 |
+
+## ⌨️ Local Development
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) (LTS version recommended)
+- npm or yarn
+
+### Installation
+
+```sh
+# Install dependencies
 npm install
 ```
 
-### Avvio in Sviluppo
+### Running Development Server
 
 ```sh
-# Avvia il server di sviluppo con hot-reload
+# Start the development server with hot-reloading
 npm run dev
 ```
 
-Il sito sarà accessibile all'indirizzo `http://localhost:4321`.
+The website will be accessible at `http://localhost:4321` (or your configured `BASE_URL`).
 
-### Build per la Produzione
+### Building for Production
 
 ```sh
-# Genera la build statica nella cartella ./dist
+# Build static assets in the ./dist directory
 npm run build
 ```
 
-## 🐳 Deployment con Docker
+## 🐳 Deployment with Docker
 
-Il progetto è pronto per essere distribuito tramite Docker:
+The project is ready to be containerized and served using Nginx:
 
 ```sh
-# Build dell'immagine
+# Build the image
 docker build -t siv-website .
 
-# Esecuzione del container
+# Run the container
 docker run -p 3000:3000 siv-website
 ```
 
-L'applicazione sarà servita da Nginx sulla porta `3000`.
+The application will be served by Nginx on port `3000`.
+
+### Gallery Notes (v1)
+
+* **Docker Asset Bundling**: In the current version (v1), all local gallery images (located in `src/assets/gallery/`) are copied, optimized, and bundled directly into the Docker image during the build process. This ensures that the gallery remains self-contained inside the container deployment.

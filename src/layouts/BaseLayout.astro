@@ -12,6 +12,7 @@ interface Props {
 }
 
 const {title, description, keywords} = Astro.props;
+const year = new Date().getFullYear();
 ---
 
 <html lang="en">
@@ -26,7 +27,8 @@ const {title, description, keywords} = Astro.props;
 </main>
 <Sponsors/>
 <div class="text-center p-8">
-    <VDB/>
+    <!--<VDB/>-->
+    &copy; 2025 - {year}
 </div>
 </body>
 </html>

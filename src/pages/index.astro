@@ -2,31 +2,32 @@
 import "../styles/global.css";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Button from "../components/Button.astro";
+import { PHP_PATHS } from "../consts";
 
 const menu = [
     {
         title: "Galleria",
-        href: "/galleria",
+        href: `${import.meta.env.BASE_URL}galleria`,
     },
     {
         title: "Calendari",
-        href: "https://summerisvolley.it/hub/visualizzaCalendario.php",
+        href: PHP_PATHS.CALENDARI,
     },
     {
         title: "Gironi",
-        href: "https://summerisvolley.it/hub/visualizzaGironi.php",
+        href: PHP_PATHS.GIRONI,
     },
     {
         title: "Gare",
-        href: "https://summerisvolley.it/hub/gare.php",
+        href: PHP_PATHS.GARE,
     },
     {
         title: "Classifica",
-        href: "https://summerisvolley.it/hub/visualizzaClassifica.php",
+        href: PHP_PATHS.CLASSIFICA,
     },
     {
         title: "Fasi finali",
-        href: "https://summerisvolley.it/hub/fasiFinali.php",
+        href: PHP_PATHS.FASI_FINALI,
         disabled: true,
     },
 ];
