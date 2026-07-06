@@ -5,10 +5,12 @@ interface Props {
     homepage?: boolean
 }
 
+import { getCleanUrl } from "../utils";
+
 const { homepage = false } = Astro.props;
 
 const currentPath = Astro.url.pathname;
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL || '';
 
 // Match either / or /index.html or /siv-website/ etc.
 const normalizedPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
@@ -30,8 +32,8 @@ const navLinks = [
 <header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-sm">
     <div class="flex justify-between items-center h-20 px-6 max-w-[1280px] mx-auto w-full">
         <!-- Logo and Site Name -->
-        <a href={base} class="flex items-center gap-3 group">
-            <img src={`${base}logo.png`} alt="Summer Is Volley Logo" class="h-12 w-auto group-hover:scale-105 transition-transform duration-200">
+        <a href={base || '/'} class="flex items-center gap-3 group">
+            <img src={getCleanUrl('logo.png')} alt="Summer Is Volley Logo" class="h-12 w-auto group-hover:scale-105 transition-transform duration-200">
             <span class="font-headline-md text-2xl font-black text-primary text-glow-primary tracking-tight">Summer Is Volley</span>
         </a>
 

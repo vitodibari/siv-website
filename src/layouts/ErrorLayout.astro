@@ -8,7 +8,10 @@ interface Props {
     errorMsg: string;
 }
 
+import { getCleanUrl } from "../utils";
+
 const {errorCode, errorMsg} = Astro.props;
+const base = import.meta.env.BASE_URL || '';
 ---
 
 <html lang="it" class="dark">
@@ -22,12 +25,12 @@ const {errorCode, errorMsg} = Astro.props;
 </div>
 
 <div class="relative z-10 flex flex-col items-center justify-center text-center p-6 max-w-md">
-    <img src={`${import.meta.env.BASE_URL}/logo.png`} class="w-40 hover:scale-105 transition-transform duration-300 mb-8" alt="SIV Logo">
+    <img src={getCleanUrl('logo.png')} class="w-40 hover:scale-105 transition-transform duration-300 mb-8" alt="SIV Logo">
     
     <h1 class="font-display-xl text-primary text-glow-primary italic mb-2">{errorCode}</h1>
     <p class="font-headline-md text-on-surface mb-8">{errorMsg}</p>
     
-    <Button value="TORNA ALLA HOME" href={import.meta.env.BASE_URL} variant="primary" />
+    <Button value="TORNA ALLA HOME" href={base || '/'} variant="primary" />
 </div>
 </body>
 </html>

@@ -1,9 +1,10 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCleanUrl } from "../utils";
 ---
 <BaseLayout>
     <div class="flex flex-col items-center justify-center min-h-screen">
-        <img src={`${import.meta.env.BASE_URL}/logo.png`} alt="SIV Logo" class="w-72 md:w-96"/>
+        <img src={getCleanUrl('logo.png')} alt="SIV Logo" class="w-72 md:w-96"/>
         <h1 class="font-miskan text-4xl md:text-5xl">Coming Soon</h1>
     </div>
 </BaseLayout>

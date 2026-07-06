@@ -1,8 +1,9 @@
 ---
 import { PHP_PATHS } from "../consts";
 import VDB from "./VDB.astro";
+import { getCleanUrl } from "../utils";
 const year = new Date().getFullYear();
-const base = import.meta.env.BASE_URL;
+const base = import.meta.env.BASE_URL || '';
 ---
 
 <footer class="w-full py-8 bg-surface-container-lowest border-t border-outline-variant/10 z-10 relative">

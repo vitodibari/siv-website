@@ -1,8 +1,7 @@
 ---
 import Button from "./Button.astro";
 import { PHP_PATHS } from "../consts";
-
-const base = import.meta.env.BASE_URL;
+import { getCleanUrl } from "../utils";
 ---
 
 <section class="relative flex items-center justify-center overflow-hidden bg-mesh pt-24 pb-10">
@@ -38,7 +37,7 @@ const base = import.meta.env.BASE_URL;
                 <img 
                     alt="Summer Is Volley Hero Logo" 
                     class="relative z-10 w-full h-full object-contain hover:scale-105 transition-transform duration-500 animate-[bounce_5s_ease-in-out_infinite]" 
-                    src={`${base}logo.png`}
+                    src={getCleanUrl('logo.png')}
                 >
             </div>
         </div>
