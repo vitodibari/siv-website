@@ -1,0 +1,46 @@
+---
+import Button from "./Button.astro";
+import { PHP_PATHS } from "../consts";
+
+const base = import.meta.env.BASE_URL;
+---
+
+<section class="relative flex items-center justify-center overflow-hidden bg-mesh pt-24 pb-10">
+    <!-- Ambient Blur Blobs -->
+    <div class="absolute inset-0 z-0 pointer-events-none">
+        <div class="absolute top-1/4 left-1/4 w-60 md:w-80 h-60 md:h-80 bg-primary/15 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-1/4 right-1/4 w-60 md:w-80 h-60 md:h-80 bg-tertiary/8 rounded-full blur-[100px]"></div>
+    </div>
+    
+    <div class="relative z-10 max-w-[1280px] mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+        <!-- Text content -->
+        <div class="text-center lg:text-left">
+            <span class="inline-block px-3 py-1 rounded-full bg-tertiary/10 border border-tertiary/30 text-tertiary font-label-bold text-[10px] mb-3 pulse-glow tracking-widest font-bold">
+                SUMMER IS VOLLEY 2026
+            </span>
+            <h1 class="font-display-xl text-3xl md:text-5xl text-on-surface mb-4 leading-tight font-black uppercase">
+                IL CALORE STA <span class="text-primary text-glow-primary italic block sm:inline">ARRIVANDO</span>.
+            </h1>
+            <p class="font-body-md text-sm md:text-base text-on-surface-variant max-w-xl mx-auto lg:mx-0 mb-5 leading-relaxed">
+                Partecipa alla serie di beach volley più prestigiosa della costa. Partite ad alta intensità, atmosfera professionale e la gloria definitiva sotto il sole estivo.
+            </p>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                <Button value="REGISTRATI ORA" href="https://hub.summerisvolley.it" variant="primary" class="py-2.5 px-6 text-base md:text-lg" />
+                <Button value="VEDI CALENDARIO" href={PHP_PATHS.CALENDARI} variant="secondary" class="py-2.5 px-6 text-base md:text-lg" />
+            </div>
+        </div>
+        
+        <!-- Logo Image Showcase -->
+        <div class="flex justify-center items-center">
+            <div class="relative w-full aspect-square max-w-[160px] md:max-w-[200px] flex items-center justify-center">
+                <!-- Background Pulse Glow -->
+                <div class="absolute inset-0 bg-primary/10 rounded-full animate-pulse blur-2xl"></div>
+                <img 
+                    alt="Summer Is Volley Hero Logo" 
+                    class="relative z-10 w-full h-full object-contain hover:scale-105 transition-transform duration-500 animate-[bounce_5s_ease-in-out_infinite]" 
+                    src={`${base}logo.png`}
+                >
+            </div>
+        </div>
+    </div>
+</section>

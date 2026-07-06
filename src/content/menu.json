@@ -1,0 +1,62 @@
+[
+  {
+    "id": "galleria",
+    "title": "Galleria",
+    "description": "Rivivi i momenti migliori della stagione.",
+    "href": "/galleria",
+    "icon": "photo_library",
+    "color": "primary",
+    "disabled": false,
+    "order": 1
+  },
+  {
+    "id": "calendari",
+    "title": "Calendari",
+    "description": "Controlla le date e i luoghi delle partite.",
+    "href": "https://hub.summerisvolley.it/visualizzaCalendario.php",
+    "icon": "calendar_month",
+    "color": "tertiary",
+    "disabled": false,
+    "order": 2
+  },
+  {
+    "id": "gironi",
+    "title": "Gironi",
+    "description": "Dettagli dei gironi e della fase a gironi.",
+    "href": "https://hub.summerisvolley.it/visualizzaGironi.php",
+    "icon": "groups",
+    "color": "secondary",
+    "disabled": false,
+    "order": 3
+  },
+  {
+    "id": "gare",
+    "title": "Gare",
+    "description": "Aggiornamenti in tempo reale e referti gare.",
+    "href": "https://hub.summerisvolley.it/gare.php",
+    "icon": "sports_volleyball",
+    "color": "primary",
+    "disabled": false,
+    "order": 4
+  },
+  {
+    "id": "classifica",
+    "title": "Classifica",
+    "description": "Classifiche ufficiali della stagione e punti.",
+    "href": "https://hub.summerisvolley.it/visualizzaClassifica.php",
+    "icon": "leaderboard",
+    "color": "tertiary",
+    "disabled": false,
+    "order": 5
+  },
+  {
+    "id": "fasi-finali",
+    "title": "Fasi finali",
+    "description": "Fasi a eliminazione diretta in arrivo.",
+    "href": "https://hub.summerisvolley.it/fasiFinali.php",
+    "icon": "emoji_events",
+    "color": "secondary",
+    "disabled": true,
+    "order": 6
+  }
+]

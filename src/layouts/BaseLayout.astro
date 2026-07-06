@@ -2,7 +2,7 @@
 import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Sponsors from "../components/Sponsors.astro";
-import VDB from "../components/VDB.astro";
+import Footer from "../components/Footer.astro";
 import BaseHead from "../components/BaseHead.astro";
 
 interface Props {
@@ -12,23 +12,19 @@ interface Props {
 }
 
 const {title, description, keywords} = Astro.props;
-const year = new Date().getFullYear();
 ---
 
-<html lang="en">
+<html lang="it" class="dark">
 <head>
     <BaseHead title={title} description={description} keywords={keywords}/>
 </head>
 
-<body class="flex flex-col min-h-dvh">
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary min-h-screen flex flex-col overflow-x-hidden">
 <Header/>
-<main class='flex-1'>
+<main class="flex-1">
     <slot/>
 </main>
 <Sponsors/>
-<div class="text-center p-8">
-    <!--<VDB/>-->
-    &copy; 2025 - {year}
-</div>
+<Footer/>
 </body>
 </html>
