@@ -1,15 +1,118 @@
 ---
+import { PHP_PATHS } from "../consts";
+
 interface Props {
     homepage?: boolean
 }
 
+import { getCleanUrl } from "../utils";
+
+const { homepage = false } = Astro.props;
+
+const currentPath = Astro.url.pathname;
+const base = import.meta.env.BASE_URL || '';
+
+// Match either / or /index.html or /siv-website/ etc.
+const normalizedPath = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
+const normalizedBase = base.endsWith('/') ? base : `${base}/`;
+
+const isHome = normalizedPath === normalizedBase || currentPath.endsWith('index.html');
+const isGalleria = currentPath.includes("galleria");
+
+const navLinks = [
+    // { label: "Home", href: base, active: isHome },
+    // { label: "Galleria", href: `${base}galleria`, active: isGalleria },
+    // { label: "Calendari", href: PHP_PATHS.CALENDARI, active: false },
+    // { label: "Gironi", href: PHP_PATHS.GIRONI, active: false },
+    // { label: "Gare", href: PHP_PATHS.GARE, active: false },
+    // { label: "Classifica", href: PHP_PATHS.CLASSIFICA, active: false },
+];
 ---
 
-<header id="header">
-    <div class="flex flex-col items-center justify-between w-full p-4">
-        <a href={import.meta.env.BASE_URL} class="-m-1.5 p-1.5">
-            <span class="sr-only">Race Time Go</span>
-            <img class="h-24 md:h-32 w-auto" src={`${import.meta.env.BASE_URL}/logo.png`} alt="">
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-sm">
+    <div class="flex justify-between items-center h-20 px-6 max-w-[1280px] mx-auto w-full">
+        <!-- Logo and Site Name -->
+        <a href={base || '/'} class="flex items-center gap-3 group">
+            <img src={getCleanUrl('logo.png')} alt="Summer Is Volley Logo" class="h-12 w-auto group-hover:scale-105 transition-transform duration-200">
+            <span class="font-headline-md text-2xl font-black text-primary text-glow-primary tracking-tight">Summer Is Volley</span>
         </a>
+
+        <!-- Desktop Navigation -->
+        <nav class="hidden md:flex gap-6 items-center">
+            {navLinks.map(link => (
+                <a 
+                    href={link.href}
+                    class={`font-body-md text-sm transition-colors duration-200 pb-1 ${
+                        link.active 
+                            ? "text-secondary-container font-bold border-b-2 border-secondary-container" 
+                            : "text-on-surface-variant hover:text-on-surface"
+                    }`}
+                >
+                    {link.label}
+                </a>
+            ))}
+        </nav>
+
+        <!-- CTA & Hamburger -->
+        <!--<div class="flex items-center gap-4">-->
+        <!--    <a -->
+        <!--        href="https://play.summerisvolley.it"-->
+        <!--        class="hidden sm:inline-block bg-secondary-container text-on-secondary-container px-5 py-2 rounded-full font-label-bold text-xs hover:scale-105 transition-transform duration-200 active:opacity-80 active:scale-95 font-bold"-->
+        <!--    >-->
+        <!--        REGISTRATI ORA-->
+        <!--    </a>-->
+
+        <!--    &lt;!&ndash; Hamburger Button for Mobile &ndash;&gt;-->
+        <!--    <button -->
+        <!--        id="mobile-menu-btn" -->
+        <!--        class="md:hidden text-on-surface hover:text-primary transition-colors focus:outline-none p-2 flex items-center justify-center"-->
+        <!--        aria-label="Apri menu"-->
+        <!--    >-->
+        <!--        <span class="material-symbols-outlined text-3xl">menu</span>-->
+        <!--    </button>-->
+        <!--</div>-->
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div
+        id="mobile-menu"
+        class="hidden fixed inset-x-0 top-20 bg-surface/95 backdrop-blur-2xl border-b border-outline-variant/20 flex flex-col p-6 gap-4 z-40 transition-all duration-300 md:hidden shadow-2xl"
+    >
+        {navLinks.map(link => (
+            <a
+                href={link.href}
+                class={`font-headline-md text-lg py-2 transition-colors ${
+                    link.active 
+                        ? "text-secondary-container font-bold" 
+                        : "text-on-surface-variant hover:text-on-surface"
+                }`}
+            >
+                {link.label}
+            </a>
+        ))}
+        <!--    <a
+            href="https://play.summerisvolley.it"
+            class="bg-secondary-container text-on-secondary-container text-center py-3 rounded-xl font-label-bold text-sm hover:opacity-90 active:scale-95 transition-all mt-2 font-bold"
+        >
+            REGISTRATI ORA
+        </a>-->
     </div>
 </header>
+
+<script>
+    const btn = document.getElementById("mobile-menu-btn");
+    const menu = document.getElementById("mobile-menu");
+    
+    if (btn && menu) {
+        btn.addEventListener("click", () => {
+            const isHidden = menu.classList.contains("hidden");
+            if (isHidden) {
+                menu.classList.remove("hidden");
+                btn.innerHTML = `<span class="material-symbols-outlined text-3xl">close</span>`;
+            } else {
+                menu.classList.add("hidden");
+                btn.innerHTML = `<span class="material-symbols-outlined text-3xl">menu</span>`;
+            }
+        });
+    }
+</script>

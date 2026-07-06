@@ -1,44 +1,11 @@
 ---
-import "../styles/global.css";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Button from "../components/Button.astro";
-import { PHP_PATHS } from "../consts";
-
-const menu = [
-    {
-        title: "Galleria",
-        href: `${import.meta.env.BASE_URL}/galleria`,
-    },
-    {
-        title: "Calendari",
-        href: PHP_PATHS.CALENDARI,
-    },
-    {
-        title: "Gironi",
-        href: PHP_PATHS.GIRONI,
-    },
-    {
-        title: "Gare",
-        href: PHP_PATHS.GARE,
-    },
-    {
-        title: "Classifica",
-        href: PHP_PATHS.CLASSIFICA,
-    },
-    {
-        title: "Fasi finali",
-        href: PHP_PATHS.FASI_FINALI,
-        disabled: true,
-    },
-];
+import Hero from "../components/Hero.astro";
+import BentoGrid from "../components/BentoGrid.astro";
+import RegisterCTA from "../components/RegisterCTA.astro";
 ---
 
-<BaseLayout>
-    <div class="container mx-auto flex flex-col items-center justify-center">
-        <div class="mt-4 grid grid-cols-2 justify-center align-middle gap-4">
-            {menu.map((item) => (
-                    <Button value={item.title} href={item.href} disabled={item.disabled}/>
-            ))}
-        </div>
-    </div>
+<BaseLayout title="Summer Is Volley | Summer Is Volley 2026">
+    <!--<Hero />-->
+    <BentoGrid />
 </BaseLayout>

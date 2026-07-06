@@ -1,0 +1,30 @@
+---
+import BentoCard from "./BentoCard.astro";
+import { getCollection } from "astro:content";
+import { resolveHref } from "../utils";
+
+const rawItems = await getCollection("menu");
+const items = rawItems
+    .map(item => item.data)
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
+---
+
+<section class="px-6 max-w-[1280px] mx-auto pb-8 pt-24">
+    <div class="text-center mb-12">
+        <h2 class="font-headline-lg text-3xl md:text-5xl text-on-surface mb-4">Accesso Rapido</h2>
+        <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+    </div>
+    
+    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+        {items.map(item => (
+            <BentoCard
+                title={item.title}
+                description={item.description}
+                href={resolveHref(item.href)}
+                icon={item.icon}
+                color={item.color}
+                disabled={item.disabled}
+            />
+        ))}
+    </div>
+</section>

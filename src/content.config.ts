@@ -10,5 +10,19 @@ const sponsors = defineCollection({
   }),
 });
 
-export const collections = { sponsors };
+const menu = defineCollection({
+  loader: file("src/content/menu.json"),
+  schema: () => z.object({
+    id: z.string(),
+    title: z.string(),
+    description: z.string(),
+    href: z.string(),
+    icon: z.string(),
+    color: z.enum(["primary", "secondary", "tertiary"]),
+    disabled: z.boolean().optional().default(false),
+    order: z.number().optional().default(0),
+  }),
+});
+
+export const collections = { sponsors, menu };
 
