@@ -10,13 +10,16 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.2",
+    "@google-cloud/storage": "^7.14.0",
     "@tailwindcss/vite": "^4.1.10",
     "astro": "^6.2.1",
     "astro-compress": "^2.3.8",
     "photoswipe": "^5.4.4",
+    "probe-image-size": "^7.2.3",
     "tailwindcss": "^4.1.10"
   },
   "devDependencies": {
-    "@types/photoswipe": "^4.1.6"
+    "@types/photoswipe": "^4.1.6",
+    "@types/probe-image-size": "^7.2.5"
   }
 }

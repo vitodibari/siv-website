@@ -1,31 +1,10 @@
 ---
 import {Picture} from "astro:assets";
 import BaseLayout from "../layouts/BaseLayout.astro";
-import type {ImageMetadata} from "astro";
 import EmptyGallery from "../components/EmptyGallery.astro";
+import { getGalleryImages } from "../services/gallery";
 
-const matches = import.meta.glob(
-    "/src/assets/gallery/**/*.{jpeg,jpg,png,JPG}",
-    {eager: true},
-) as Record<string, { default: ImageMetadata }>;
-
-// Group images by the day they were taken, assuming the folder structure is like:
-// /src/assets/gallery/YYYY-MM-DD/image.jpg
-const matchesGroupedByDay = Object.groupBy(
-    Object.entries(matches),
-    ([path, _mod]) => path.split("/")[4],
-);
-
-// Convert grouped entries to a more usable format and sort by date (newest first)
-const imagesGroupedByDay = Object.entries(matchesGroupedByDay)
-    .map(
-        ([date, entries]) =>
-            [
-                date as string,
-                entries!.map(([_, mod]) => mod.default as ImageMetadata),
-            ] as [string, ImageMetadata[]],
-    )
-    .sort((a, b) => new Date(b[0]).getTime() - new Date(a[0]).getTime());
+const imagesGroupedByDay = await getGalleryImages();
 ---
 
 <BaseLayout title="Galleria Foto | Summer Is Volley">
@@ -39,7 +18,7 @@ const imagesGroupedByDay = Object.entries(matchesGroupedByDay)
                 <select id="date-filter" class="block w-full border-0 py-2 pr-8 text-on-surface text-sm bg-transparent outline-none cursor-pointer font-body-md">
                     <option class="bg-surface-container text-on-surface" value="top">Inizio pagina</option>
                     {
-                        imagesGroupedByDay.map(([date]) => (
+                        imagesGroupedByDay.map(({date}) => (
                             <option class="bg-surface-container text-on-surface" value={date}>
                                 {new Date(date).toLocaleDateString("it-IT", {
                                     year: "numeric",
@@ -64,12 +43,12 @@ const imagesGroupedByDay = Object.entries(matchesGroupedByDay)
         <div class="relative z-10 max-w-[1280px] mx-auto px-6">
 
             <!-- Display a message if no images are found -->
-            {Object.entries(matches).length === 0 && <EmptyGallery />}
+            {imagesGroupedByDay.length === 0 && <EmptyGallery />}
 
             <!-- Display the images in a grid with PhotoSwipe -->
             <div id="gallery" class="space-y-16 pt-16">
                 {
-                    imagesGroupedByDay.map(([date, images]) => (
+                    imagesGroupedByDay.map(({date, photos}) => (
                         <div class="day-section scroll-mt-36" data-date={date}>
                             <div class="flex items-center gap-3 mb-6 px-2">
                                 <span class="material-symbols-outlined text-primary text-2xl">calendar_today</span>
@@ -84,24 +63,35 @@ const imagesGroupedByDay = Object.entries(matchesGroupedByDay)
                             </div>
                             
                             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                                {images.map(async (image) => {
+                                {photos.map(async (image) => {
                                     return (
                                         <a
-                                            href={image.src}
+                                            href={typeof image.src === "string" ? image.src : image.src.src}
                                             data-pswp-width={image.width}
                                             data-pswp-height={image.height}
                                             target="_blank"
                                             class="block overflow-hidden rounded-xl border border-outline-variant/10 hover:border-primary/50 shadow-lg hover:shadow-primary/5 hover:scale-[1.03] transition-all duration-300 group aspect-square bg-surface-container"
                                         >
-                                            <Picture
-                                                src={image}
-                                                alt={`SIV Match Image - ${date}`}
-                                                width={600}
-                                                quality={65}
-                                                formats={["avif", "webp"]}
-                                                class="object-cover w-full object-top aspect-square group-hover:scale-105 transition-transform duration-500"
-                                                loading="lazy"
-                                            />
+                                            {typeof image.src === "string" ? (
+                                                <img
+                                                    src={image.thumbnailSrc || image.src}
+                                                    alt={image.alt}
+                                                    width="600"
+                                                    height="600"
+                                                    class="object-cover w-full object-top aspect-square group-hover:scale-105 transition-transform duration-500"
+                                                    loading="lazy"
+                                                />
+                                            ) : (
+                                                <Picture
+                                                    src={image.src}
+                                                    alt={image.alt}
+                                                    width={600}
+                                                    quality={65}
+                                                    formats={["avif", "webp"]}
+                                                    class="object-cover w-full object-top aspect-square group-hover:scale-105 transition-transform duration-500"
+                                                    loading="lazy"
+                                                />
+                                            )}
                                         </a>
                                     );
                                 })}
